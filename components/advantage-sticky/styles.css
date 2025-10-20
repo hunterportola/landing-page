@@ -1,0 +1,254 @@
+/* Stack Base Styles */
+.stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  width: 100%;
+  padding: 2rem 0;
+  min-height: 520px;
+}
+
+.stack-layer {
+  --stack-offset: 0px;
+  --stack-shift: 0px;
+  position: absolute;
+  top: var(--stack-offset);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  opacity: 1;
+  transition: opacity 0.5s, transform 0.8s;
+  transform: translateY(var(--stack-shift));
+}
+
+.stack-label {
+  position: absolute;
+  left: -140px;
+  width: 240px;
+  text-align: left;
+}
+
+.stack-label-text {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  display: block;
+  opacity: 1;
+  white-space: nowrap;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.stack-layer-disk {
+  position: relative;
+  width: 300px;
+  height: auto;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stack-layer-disk svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Individual Layer Styles - Initial State */
+/* Order from top to bottom: Fintech, Middleware, Core, Bank, Federal Reserve */
+.stack-layer-fintech {
+  z-index: 6;
+  --stack-offset: 0px;
+}
+
+.stack-layer-middleware {
+  z-index: 5;
+  --stack-offset: 84.56px;
+}
+
+.stack-layer-core {
+  z-index: 4;
+  --stack-offset: 124.21px;
+}
+
+.stack-layer-bank {
+  z-index: 3;
+  --stack-offset: 163.86px;
+}
+
+.stack-layer-column {
+  z-index: 4; /* Column should sit above the Federal Reserve disk in Column state */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  --stack-offset: 163.86px;
+  --stack-shift: 100px;
+  transition: opacity 0.3s 0.1s, transform 0.6s;
+}
+
+.stack-layer-fed {
+  z-index: 2; /* Federal Reserve at bottom */
+  --stack-offset: 247.26px;
+}
+
+/* Layer Group */
+.stack-layer-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Transition Delays */
+.stack-layer-middleware .stack-label-text {
+  transition-delay: 0.1s;
+}
+
+.stack-layer-core .stack-label-text {
+  transition-delay: 0.15s;
+}
+
+.stack-layer-bank .stack-label-text {
+  transition-delay: 0.2s;
+}
+
+.stack-layer-fed .stack-label-text {
+  transition-delay: 0.25s;
+}
+
+/* Disk Shadows - only for fintech layer now since others have built-in shadows */
+.stack-layer-fintech .stack-layer-disk::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  z-index: -1;
+  width: 100%;
+  padding-top: 62.9032%;
+  border-radius: 50%;
+  overflow: visible;
+}
+
+/* Bar layer shadows */
+.stack-layer-middleware .stack-layer-disk,
+.stack-layer-core .stack-layer-disk,
+.stack-layer-bank .stack-layer-disk {
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.2));
+}
+
+/* Animation States */
+
+/* Traditional State (Initial) */
+.stack-traditional .stack-layer-fintech,
+.stack-traditional .stack-layer-middleware,
+.stack-traditional .stack-layer-core,
+.stack-traditional .stack-layer-bank,
+.stack-traditional .stack-layer-fed {
+  opacity: 1;
+  --stack-shift: 0;
+}
+
+.stack-traditional .stack-layer-column {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  --stack-shift: 100px;
+}
+
+/* Column State (Animated) */
+.stack-column .stack-layer-middleware,
+.stack-column .stack-layer-core,
+.stack-column .stack-layer-bank {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  --stack-shift: -40px;
+}
+
+.stack-column .stack-layer-fintech {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  --stack-shift: 87px; /* Keep ~80px spacing down to Column */
+}
+
+.stack-column .stack-layer-column {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  --stack-shift: 3.4px; /* Slight drop so Column sits ~80px above Fed */
+}
+
+.stack-column .stack-layer-fed {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  --stack-shift: 0; /* Anchor Federal Reserve disk */
+}
+
+/* Sticky Wrapper Styles */
+.advantage-sticky-wrap {
+  position: absolute;
+  inset: 0;
+  display: block;
+  clip-path: inset(0);
+  padding: 410px 0 0;
+  z-index: 1;
+}
+
+.advantage-sticky-frame {
+  position: sticky;
+  top: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  transform: translateY(-50%);
+  height: 410px;
+  margin-bottom: -100px;
+}
+
+.advantage-sticky-frame::after {
+  content: "";
+  position: absolute;
+  top: 90%;
+  left: 0;
+  width: 100%;
+  height: 464px;
+  transform: translate3d(0%, 0%, 0) skewY(-30deg);
+  background-image: linear-gradient(-90deg, rgba(59, 130, 246, 0.25), rgba(147, 197, 253, 0.1));
+  z-index: 0;
+}
+
+/* Section Glow */
+.advantage-glow {
+  box-shadow: rgba(0, 0, 0, 0.05) 0 1px 0 inset, rgba(0, 0, 0, 0.05) 0 -1px 0 inset;
+}
+
+.advantage-glow::before {
+  content: "";
+  inset: 0;
+  position: absolute;
+  opacity: 0.3;
+  z-index: 0;
+  background-image: radial-gradient(1000px 1500px at top right, rgba(59, 130, 246, 1), rgba(6, 182, 212, 0));
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .advantage-sticky-wrap {
+    padding: 300px 0 0;
+  }
+  
+  .advantage-sticky-frame {
+    height: 300px;
+  }
+  
+  .stack-label {
+    margin: 15% -1rem 0 0;
+  }
+}
